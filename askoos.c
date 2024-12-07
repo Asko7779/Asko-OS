@@ -347,24 +347,13 @@ int main() {
     char command[50];
     printf("[SYSTEM] Booting Into AskoOS...\n");
     sleep(3);
-    printf("[SYSTEM] Loading Memory...\n");
-    sleep(1);
-    printf("[SYSTEM] Loading /src...\n");
-    sleep(1);
-    printf("[SYSTEM] Loading /bin...\n");
-    sleep(3);
-    printf("[SYSTEM] Loading Kernel...\n");
-    sleep(2);
-
 #ifdef _WIN32
     system(CLEAR);
 #else
     system(CLEAR);
 #endif
-
     printf("[SYSTEM] AskoOS Kernel\n");
     printf("[SYSTEM] Type 'help' to get a list of commands\n");
-
     while (1) {
         printf("aOS@localhost:~$ ");
         if (fgets(command, sizeof(command), stdin) != NULL) {
