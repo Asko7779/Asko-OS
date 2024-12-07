@@ -1,7 +1,6 @@
 [BITS 16]
 [ORG 0x7C00]
-
-; Initial Setup in Real Mode
+
 START:
     cli                
     mov ax, 0x0
