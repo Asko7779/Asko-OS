@@ -1,3 +1,6 @@
+
+// outdated non-bare metal version of my OS for testing, the real version is still in development
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,6 +14,9 @@
     #include <unistd.h>
     #define CLEAR "clear"
 #endif
+
+// functions 
+
 void getIPInfo(char *ip) {
     char buffer[512];
     char command[256];
@@ -20,6 +26,8 @@ void getIPInfo(char *ip) {
         printf("Error retrieving information for IP: %s\n", ip);
         return;
     }
+
+    
     printf("Information for IP %s:\n", ip);
     int dataAvailable = 0;
     while (fgets(buffer, sizeof(buffer) - 1, fp) != NULL) {
@@ -274,6 +282,8 @@ void osInfo() {
     system("uname -a");
 #endif
 }
+
+
 void showHelp() {
     printf("[AVAILABLE COMMANDS]\n");
     printf("exit                 - Exit the terminal\n");
@@ -297,13 +307,13 @@ void showHelp() {
     printf("help                 - Show this help message\n");
 }
 
-void commandProcessing(char *command) {
+    // command processing logic
+
+void commandProcessing(char *command) {    // i know i could just make this a switch, but im too lazy to rewrite it
     if (strcmp(command, "help") == 0) {
         showHelp();
     } else if (strcmp(command, "exit") == 0) {
         exit(0);
-    } else if (strncmp(command, "ddos", 4) == 0) {
-        runDDOS();
     } else if (strncmp(command, "getip ", 6) == 0) {
         getIPInfo(command + 6);
     } else if (strncmp(command, "dns ", 4) == 0) {
@@ -343,6 +353,8 @@ void commandProcessing(char *command) {
     }
 }
 
+// main function and input field
+
 int main() {
     char command[50];
     printf("[SYSTEM] Booting Into AskoOS...\n");
@@ -360,7 +372,7 @@ int main() {
             command[strcspn(command, "\n")] = 0;
             commandProcessing(command);
         } else {
-            printf("[-] Error reading input.\n");
+            printf("[-] Error reading input\n");
         }
     }
 
