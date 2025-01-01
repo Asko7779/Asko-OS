@@ -18,8 +18,7 @@ void init_winsock() {
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         perror("WSAStartup failed");
         exit(1);
-    }
-}
+    }  }
 
 void cleanup_winsock() {
     WSACleanup();
@@ -42,7 +41,6 @@ void handle_client(int client_sock) {
         buffer[bytes_received] = '\0';
         printf("Client executed: %s\n", buffer);
     }
-
     close(client_sock);
 }
 
@@ -59,7 +57,8 @@ int main() {
     if (server_sock == -1) {
         perror("Server: Socket creation failed");
         exit(1);
-    }
+    }
+
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(PORT);
@@ -74,15 +73,17 @@ int main() {
         exit(1);
     }
 
-    printf("Server listening on port %d...\n", PORT);
+    printf("Server listening on port %d...\n", PORT);
+
     client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_addr_len);
     if (client_sock == -1) {
         perror("Server: Accept failed");
         exit(1);
     }
 
-    printf("Client connected: %s\n", inet_ntoa(client_addr.sin_addr));
-    handle_client(client_sock);
+    printf("Client connected: %s\n", inet_ntoa(client_addr.sin_addr));
+    handle_client(client_sock);
+
     close(server_sock);
 
 #ifdef _WIN32
