@@ -1,5 +1,8 @@
+// outdated and unoptimized bare metal version of this kernel
+
 #include <stdint.h>
 
+// defines
 #define VIDEO_MEMORY 0xB8000
 #define MAX_ROWS 25
 #define MAX_COLS 80
@@ -14,7 +17,7 @@ static uint16_t cursor_pos = 0;
 void kernel_main();
 void clear_screen();
 void print_char(char c);
-void print_string(const char* str);
+void print_str(const char* str);
 void show_system_info();
 void memory_dump();
 uint8_t read_keyboard();
@@ -25,14 +28,15 @@ static inline uint8_t inb(uint16_t port);
 
 void kernel_main() {
     clear_screen();
-    print_string("[AOS] AskoOS Kernel\n");
-    print_string("Press any key to continue...\n");
+    print_str("[AOS] AskoOS Kernel\n");
+    print_str("Press any key to continue.\n");
 
     while (1) {
         print_key();
     }
 }
 
+    // functions
 void clear_screen() {
     for (int i = 0; i < MAX_ROWS * MAX_COLS; ++i) {
         VIDEO[i] = 0x0F00; 
@@ -49,28 +53,27 @@ void print_char(char c) {
     }
 }
 
-void print_string(const char* str) {
+void print_str(const char* str) {
     while (*str) {
         print_char(*str++);
     }
 }
 
 void show_system_info() {
-    print_string("[OS] AskoOS - Beta Version\n");
-    print_string("[RUNNING] - Protected Mode.\n");
-    print_string("[ARCHITECTURE] - 64-bit\n");
+    print_str("[OS] AskoOS - Beta Version\n");
+    print_str("[RUNNING] - Protected Mode.\n");
+    print_str("[ARCHITECTURE] - 64-bit\n");
 }
-
 void memory_dump() {
-    print_string("Memory Dump (first 128 bytes):\n");
+    print_str("Memory Dump (first 128 bytes):\n");
     uint8_t* mem = (uint8_t*) 0x00000000;  
     char buffer[4];
 
     for (int i = 0; i < 128; i++) {
         uint8_to_hex(mem[i], buffer);
-        print_string(buffer);
-        print_string(" ");
-        if ((i + 1) % 16 == 0) print_string("\n");
+        print_str(buffer);
+        print_str(" ");
+        if ((i + 1) % 16 == 0) print_str("\n");
     }
 }
 
@@ -92,6 +95,7 @@ void print_key() {
     print_char(key);
 }
 
+    //scancode declaration
 char scancode_to_char(uint8_t scancode) {
     static char scancode_map[] = {
         [0x1E] = 'a', [0x30] = 'b', [0x2E] = 'c', [0x20] = 'd',
@@ -106,11 +110,13 @@ char scancode_to_char(uint8_t scancode) {
     if (scancode < sizeof(scancode_map)) {
         return scancode_map[scancode];
     }
+    
     return 0;
 }
 
 static inline uint8_t inb(uint16_t port) {
     uint8_t value;
     asm volatile ("inb %1, %0" : "=a" (value) : "dN" (port));
+    
     return value;
 }
